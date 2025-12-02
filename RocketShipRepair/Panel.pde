@@ -17,11 +17,16 @@ class Panel {
     xcoord = ((xcoord+width)%(width*panels.size()));
     xcoord -= width;
   }
+  void interact(PVector mouseposition) {
+    for (Task task : tasks) {
+      task.interact(mouseposition,xcoord);
+    }
+  }
   
   void display() {
     rectMode(CORNER);
-    stroke(255,0,0);
-    fill(noise(id*393)*255);
+    noStroke();
+    fill(100);
     rect(xcoord,0,width,height);
     for (Task task : tasks)
     {

@@ -9,11 +9,12 @@ class Task {
     position = newpos;
   }
   
-  void interact(PVector interactionLocation, boolean click) {}
+  void interact(PVector interactionLocation, float parentx) {}
   
   void display(float parentx) {
     rectMode(CENTER);
-    fill(10,10,10,.1);
+    fill(10,10,10);
+    noStroke();
     rect(position.x + parentx, position.y, tasksize.x, tasksize.y);
   }
 }
