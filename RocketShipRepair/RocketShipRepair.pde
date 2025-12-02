@@ -1,78 +1,136 @@
 boolean isInGame = false;
 
-ArrayList<Panel> Panels = new ArrayList();
 PVector mousePos = new PVector();
+
+ArrayList<Task> tasks = new ArrayList();
+int frames = 0;
+
+boolean grabbing = false;
+boolean clickedLFrame = false;
+
+boolean accelmode = true;
+PVector mouseaccel;
+PVector mousevelocity;
 
 void setup() {
   size(1280,1024);
-  for (int pi = 0; pi < 1; pi++) 
-  {
-    ArrayList<Task> newtasks = new ArrayList();
-    
-    for (int ti = 0; ti < 1; ti++)
-    {
-      newtasks.add(new WireTask(new PVector(width/2,ti*(height/3)+tasksize.y/2)));
-    }
-    
-    Panels.add(new Panel(Panels,width*pi,newtasks));
-  }
 }
 
-int frames = 0;
 void firstFrame() {
   mousePos = new PVector(width/2,height/2);
+  
+  for (int i = 1; i >=0; i-=1)
+  {
+    PVector position = new PVector(random(-width,width*2),random(300,height-300));
+    
+    float smallestDist = 10000;
+    do {
+      smallestDist = 10000;
+      position = new PVector(random(-width,width*2),random(300,height-300));
+      for (Task task : tasks) {
+        float newdist = position.dist(task.position);
+        if (newdist < smallestDist)
+        {
+          smallestDist = newdist;
+        }
+      }
+    } while (smallestDist < 500);
+    switch (parseInt(random(1)))
+    {
+      case 0:
+      tasks.add(new WireTask(position));
+      break;
+    }
+    
+    mouseaccel = new PVector(0,0);
+    mousevelocity = new PVector(0,0);
+    mousePos = new PVector(width/2,height/2);
+  }
+
   println("Frame1");
 }
 
 void draw() {
-  background(255,0,255);
 
-  if (isInGame) 
-  {
-    
+
+  if (isInGame) {
+    pushMatrix();
+    translate(random(10),random(10));
+    background(200,200,200);
     if (frames == 0) {
       firstFrame();
     }
     
+    if (keyPressed && !accelmode)
+    {
+      if (keyCode == UP)
+      {mousePos.y-=5;}
+      else if (keyCode == DOWN)
+      {mousePos.y+=5;}
+      else if (keyCode == LEFT)
+      {mousePos.x-=5;}
+      else if (keyCode == RIGHT)
+      {mousePos.x+=5;}
+    }
+    else if (keyPressed)
+    {
+      if (keyCode == UP)
+      {mouseaccel.y-=.5;}
+      else if (keyCode == DOWN)
+      {mouseaccel.y+=.5;}
+      else if (keyCode == LEFT)
+      {mouseaccel.x-=.5;}
+      else if (keyCode == RIGHT)
+      {mouseaccel.x+=.5;}
+    }
+    
+    if (accelmode)
+    {
+      mousePos.add(mousevelocity);
+      mousevelocity.add(mouseaccel);
+      mouseaccel = new PVector(0,0);
+    }
+    
+    mousePos.x = constrain(mousePos.x,0,width);
+    mousePos.y = constrain(mousePos.y,0,height);
+    
     
     if (keyPressed) {
-    int moveamt = 5;
-    if (keyCode == UP)
+      if (key == ' ')
+      {
+        if (!clickedLFrame) 
+        {
+          grabbing = !grabbing;
+        }
+      }
+      clickedLFrame = key == ' ';
+    }
+    else {
+      clickedLFrame = false;
+    }
+    for (Task task : tasks)
     {
-      mousePos.y -= moveamt;
-    }
-    if (keyCode == DOWN)
-    {
-      mousePos.y += moveamt;
-    }
-    if (keyCode == LEFT)
-    {
-      mousePos.x -= moveamt;
-    }
-    if (keyCode == RIGHT)
-    {
-      mousePos.x += moveamt; 
-    }
-    }
-    
-    for (Panel panel : Panels) {
+      task.display();
+      task.interact(mousePos);
+      
       if (keyPressed)
       {
         if (key == 'a')
         {
-          panel.movex(10);
+           task.move(-10); 
         }
         else if (key == 'd')
         {
-          panel.movex(-10);
+          task.move(10);
         }
       }
-      panel.display();
-      panel.interact(mousePos);
     }
-    
+    stroke(255,0,0);
+    noFill();
+    strokeWeight(10);
     circle(mousePos.x,mousePos.y,30);
     frames++;
+    popMatrix();
   }
   else
   {
