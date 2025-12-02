@@ -1,3 +1,5 @@
+
+
 class WireTask extends Task {
   ArrayList<PVector> wires;
   ArrayList<PVector> wiresStart;
@@ -9,7 +11,7 @@ class WireTask extends Task {
    
    wires = new ArrayList();
    for (int i = parseInt(random(3,6)); i > 0; i-=1 ){
-     wires.add(new PVector(-250,10));
+     wires.add(new PVector(-200,10));
    } 
    int i = 0;
    for (PVector wire : wires)
@@ -26,7 +28,7 @@ class WireTask extends Task {
    sockets = new ArrayList();
    for (PVector wire : wires)
    {
-     sockets.add(new PVector(250,10));
+     sockets.add(new PVector(200,10));
    }
    i = 0;
    float offset = random(tasksize.y);
@@ -54,6 +56,21 @@ class WireTask extends Task {
         break; //Breaks so it will only ever grab one item
       }
     }
+    
+    int i = 0;
+    boolean anyincomplete = false;
+    for (PVector wire : wires)
+    {
+      if (wire.dist(sockets.get(i)) < 50.0)
+      {
+        wire = sockets.get(i);
+      }
+      else {
+        anyincomplete = true;
+      }
+      isComplete = !anyincomplete;
+      i++;
+    }
   }
   
   void display() {
@@ -63,11 +80,11 @@ class WireTask extends Task {
     for (PVector wire : wires)
     {
       noStroke();
-      fill(0,100,255);
+      fill(100+noise(i*32)*125,100+noise(i*338)*125,100+noise(i*727)*125);
       circle(position.x+wire.x,position.y+wire.y,10);
       
       strokeWeight(5);
-      stroke(0,100,255);
+      stroke(100+noise(i*32)*125,100+noise(i*338)*125,100+noise(i*727)*125);
       line(wiresStart.get(i).x+position.x,wiresStart.get(i).y+position.y,wires.get(i).x+position.x,wires.get(i).y+position.y);
       i++;
   }
@@ -75,9 +92,16 @@ class WireTask extends Task {
     i = 0;
     for (PVector socket : sockets)
     {
-      stroke(255,0,0);
+      if (socket.dist(wires.get(i)) < 50.0)
+      {
+        fill(0,255,0);
+      }
+      else {
+        noFill();
+      }
+      stroke(100+noise(i*32)*125,100+noise(i*338)*125,100+noise(i*727)*125);
       strokeWeight(10);
-      noFill();
+      
       circle(position.x+socket.x,position.y+socket.y,20);
       i++;
     }

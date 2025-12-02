@@ -12,12 +12,21 @@ boolean accelmode = true;
 PVector mouseaccel;
 PVector mousevelocity;
 
+public enum GameState {
+  MAIN_MENU, IN_GAME, WIN, LOOSE;
+}
+
+GameState programState = GameState.MAIN_MENU;
+
 void setup() {
   size(1280,1024);
 }
 
 void firstFrame() {
   mousePos = new PVector(width/2,height/2);
+  
+  tasks = new ArrayList();
+  grabbing = false;
   
   for (int i = 1; i >=0; i-=1)
   {
@@ -41,22 +50,21 @@ void firstFrame() {
       tasks.add(new WireTask(position));
       break;
     }
-    
-    mouseaccel = new PVector(0,0);
-    mousevelocity = new PVector(0,0);
-    mousePos = new PVector(width/2,height/2);
   }
-
-  println("Frame1");
+  
+  mouseaccel = new PVector(0,0);
+  mousevelocity = new PVector(0,0);
+  mousePos = new PVector(width/2,height/2);
 }
 
 void draw() {
-
-
-  if (isInGame) {
+  switch (programState) {
+    case IN_GAME:
+    fill(10,10,20,50);
+    rectMode(CORNER);
+    rect(0,0,width,height);
     pushMatrix();
     translate(random(10),random(10));
-    background(200,200,200);
     if (frames == 0) {
       firstFrame();
     }
@@ -88,6 +96,7 @@ void draw() {
     {
       mousePos.add(mousevelocity);
       mousevelocity.add(mouseaccel);
+      mousevelocity.sub(mousevelocity.copy().div(50));
       mouseaccel = new PVector(0,0);
     }
     
@@ -125,26 +134,55 @@ void draw() {
         }
       }
     }
+    
+    boolean anyincomplete = false;
+    for (Task task : tasks)
+    {
+      if (!task.isComplete)
+      {
+        anyincomplete = true;
+        break;
+      }
+    }
+    
+    if (!anyincomplete)
+    {
+      programState = GameState.WIN;
+    }
+    
+    
     stroke(255,0,0);
     noFill();
     strokeWeight(10);
     circle(mousePos.x,mousePos.y,30);
     frames++;
     popMatrix();
-  }
-  else
-  {
-    switch(mainMenu()) {
-      case NO_EVENT:
-      frames = 0;
-      break;
+    break;
       
-      case START_GAME:
-      isInGame = true;
-      break;
-      
-      default:
-      break;
+    case MAIN_MENU:
+    Menu("Press any button to begin!",color(200,100,0));
+    if (keyPressed)
+    {
+      programState = GameState.MAIN_MENU;
     }
+    frames = 0;
+    break;
+    
+    case WIN:
+    Menu("You Win!",color(0,100,0));
+    if (keyPressed)
+    {
+      programState = GameState.MAIN_MENU;
+    }
+    break;
+    case LOOSE:
+    Menu("You Lost :(",color(0,0,100));
+    if (keyPressed)
+    {
+      programState = GameState.MAIN_MENU;
+    }
+    break;
+      
+    
   }
 }

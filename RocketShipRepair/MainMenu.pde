@@ -1,23 +1,13 @@
-color BACKGROUNDCOLOR = color(200,100,50);
-color TEXTCOLOR = color(255,255,255);
-
-public enum MenuEvent {
-  NO_EVENT, START_GAME;
-}
-
-public MenuEvent mainMenu() {
+void Menu(String text, color Color) {
   
-  fill(BACKGROUNDCOLOR);
+  fill(Color);
+  rectMode(CORNER);
   rect(0,0,width,height);
   
-  fill(TEXTCOLOR);
+  fill(255,255,255);
   textAlign(CENTER,CENTER);
   textSize(50);
   if ((millis()/500)%2 == 0) {
-    text("Press Any Button To Play!",0,0,width,height);
+    text(text,0,0,width,height);
   }
-  if (keyPressed){
-    return MenuEvent.START_GAME;
-  }
-  return MenuEvent.NO_EVENT;
 }

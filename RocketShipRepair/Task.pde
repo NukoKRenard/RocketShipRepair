@@ -1,5 +1,5 @@
 class Task {
-  boolean isComplete;
+  boolean isComplete = false;
   PVector position;
   PVector tasksize;
   PVector size;
@@ -21,9 +21,13 @@ class Task {
   void interact(PVector interactionLocation) {}
   
   void display() {
+    stroke(255,0,0);
+    if (isComplete)
+    {
+      stroke(0,255,0);
+    }
     rectMode(CENTER);
     fill(10,10,10);
-    noStroke();
     rect(position.x, position.y, tasksize.x, tasksize.y);
   }
 }
