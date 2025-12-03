@@ -4,18 +4,17 @@ PVector mousePos = new PVector();
 
 ArrayList<Task> tasks = new ArrayList();
 int frames = 0;
+int menuframes = 0;
 
 boolean grabbing = false;
-boolean grabbedsomething = false;
 boolean clickedLFrame = false;
 
 boolean accelmode = true;
 PVector mouseaccel;
 PVector mousevelocity;
 
-
-int starttime = 0;
-int maxtime = 1000*60*10;
+float maxTime = 1000*60*10;
+float startTime = 0;
 
 public enum GameState {
   MAIN_MENU, IN_GAME, WIN, LOOSE;
@@ -30,10 +29,11 @@ void setup() {
 void firstFrame() {
   mousePos = new PVector(width/2,height/2);
   
-  starttime = millis();
+  startTime = millis();
   
   tasks = new ArrayList();
   grabbing = false;
+  menuframes = 0;
   
   for (int i = 1; i >=0; i-=1)
   {
@@ -155,22 +155,21 @@ void draw() {
     if (!anyincomplete)
     {
       programState = GameState.WIN;
-      frames = 0;
     }
-    else if ((millis()-starttime) > maxtime)
-    {
-      programState = GameState.LOOSE;
-      frames = 0;
-    }
-    
     
     rectMode(CENTER);
-    fill(20);
+    fill(100,100,100);
     rect(width/2,50,width-200,50);
-    noStroke();
+    rectMode(CENTER);
     fill(0,100,100);
-    rect(width/2,50,(width-200)*((maxtime-(millis()-starttime))/float(maxtime)),50);
+    rect(width/2,50,(width-200)*((millis()-startTime)/maxTime),50);
     
+    
+    if ((millis()-startTime) > maxTime && false)
+    {
+      programState = GameState.LOOSE;
+    }
+   
     stroke(255,0,0);
     noFill();
     strokeWeight(10);
@@ -180,7 +179,7 @@ void draw() {
     break;
       
     case MAIN_MENU:
-    Menu("Press any button to begin!","Controlls: Arrow keys to move cursor, a and d to move camera, space to grab and release" ,color(200,100,0));
+    Menu("Press any button to begin!",color(200,100,0));
     if (keyPressed)
     {
       programState = GameState.IN_GAME;
@@ -189,20 +188,20 @@ void draw() {
     break;
     
     case WIN:
-    Menu("You Win!","You completed all the tasks!",color(0,100,0));
-    if (frames > 60*3)
+    Menu("You Win!",color(0,100,0));
+    if (menuframes > 300)
     {
       programState = GameState.MAIN_MENU;
     }
-    frames++;
+    menuframes += 1;
     break;
     case LOOSE:
-    Menu("You Lost :(","The timer ran out and you blew up :(",color(0,0,100));
-    if (frames > 60*3)
+    Menu("You Lost :(",color(0,0,100));
+    if (menuframes > 300)
     {
       programState = GameState.MAIN_MENU;
     }
-    frames++;
+    menuframes += 1;
     break;
       
     

@@ -1,4 +1,4 @@
-void Menu(String text, color Color) {
+void Menu(String text, String tooltip, color Color) {
   
   fill(Color);
   rectMode(CORNER);
@@ -10,4 +10,6 @@ void Menu(String text, color Color) {
   if ((millis()/500)%2 == 0) {
     text(text,0,0,width,height);
   }
+  textSize(20);
+  text(tooltip,0,width/2,width,50);
 }

@@ -10,7 +10,7 @@ class WireTask extends Task {
    tasksize = new PVector(500,250);
    
    wires = new ArrayList();
-   for (int i = parseInt(random(3,6)); i > 0; i-=1 ){
+   for (int i = parseInt(random(2,3)); i > 0; i-=1 ){
      wires.add(new PVector(-200,10));
    } 
    int i = 0;
@@ -61,7 +61,7 @@ class WireTask extends Task {
     boolean anyincomplete = false;
     for (PVector wire : wires)
     {
-      if (wire.dist(sockets.get(i)) < 30)
+      if (wire.dist(sockets.get(i)) < 50.0)
       {
         wire = sockets.get(i);
       }
@@ -80,11 +80,11 @@ class WireTask extends Task {
     for (PVector wire : wires)
     {
       noStroke();
-      fill(25+noise(i*32)*200,25+noise(i*338)*200,25+noise(i*727)*200);
+      fill(100+noise(i*32)*125,100+noise(i*338)*125,100+noise(i*727)*125);
       circle(position.x+wire.x,position.y+wire.y,10);
       
       strokeWeight(5);
-      stroke(25+noise(i*32)*200,25+noise(i*338)*200,25+noise(i*727)*200);
+      stroke(100+noise(i*32)*125,100+noise(i*338)*125,100+noise(i*727)*125);
       line(wiresStart.get(i).x+position.x,wiresStart.get(i).y+position.y,wires.get(i).x+position.x,wires.get(i).y+position.y);
       i++;
   }
@@ -92,14 +92,14 @@ class WireTask extends Task {
     i = 0;
     for (PVector socket : sockets)
     {
-      if (socket.dist(wires.get(i)) < 30.0)
+      if (socket.dist(wires.get(i)) < 50.0)
       {
         fill(0,255,0);
       }
       else {
         noFill();
       }
-      stroke(25+noise(i*32)*200,25+noise(i*338)*200,25+noise(i*727)*200);
+      stroke(100+noise(i*32)*125,100+noise(i*338)*125,100+noise(i*727)*125);
       strokeWeight(10);
       
       circle(position.x+socket.x,position.y+socket.y,20);
