@@ -92,7 +92,10 @@ void draw() {
     
     //This matrix makes the gamera shake.
     pushMatrix();
-    translate(random(10),random(10));
+    //Rocks the screen
+    rotate(sin(millis()/1000.0)*(millis()-starttime)/float(maxtime)*.5);
+    //Jiggles the screen.
+    translate(random((millis()-starttime)/float(maxtime)*100),random((millis()-starttime)/float(maxtime)*100));
     //If the game is on the first frame, then fire the first frame function.
     if (frames == 0) {
       firstFrame();
@@ -129,6 +132,7 @@ void draw() {
       mousePos.add(mousevelocity);
       mousevelocity.add(mouseaccel);
       mousevelocity.sub(mousevelocity.copy().div(50));
+      mousevelocity.add(new PVector(0,5));
       mouseaccel = new PVector(0,0);
     }
     
