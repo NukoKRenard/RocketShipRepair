@@ -1,36 +1,43 @@
-
-
+//This is one of the possible tasks, the wires task.
 class WireTask extends Task {
+  //The wires and their target sockets.
   ArrayList<PVector> wires;
   ArrayList<PVector> wiresStart;
   ArrayList<PVector> sockets;
   
+  //Updates the printer task.
   WireTask (PVector newpos) {
    super(newpos);
    tasksize = new PVector(500,250);
    
+   //Adds a nandom number of wires.
    wires = new ArrayList();
    for (int i = parseInt(random(3,6)); i > 0; i-=1 ){
      wires.add(new PVector(-200,10));
    } 
+   //Repositions each wire's y.
    int i = 0;
    for (PVector wire : wires)
    {
      wire.y = ((tasksize.y/float(wires.size()-1)-10)*i-tasksize.y/2)+10;
      i++;
    }
+   
+   //Stores the start position of each wire for drawing the line.
    wiresStart = new ArrayList();
    for (PVector wire : wires)
    {
      wiresStart.add(wire.copy());
    }
    
+   //Creates a socket for each wire.
    sockets = new ArrayList();
    for (PVector wire : wires)
    {
      sockets.add(new PVector(200,10));
    }
    i = 0;
+   //Randomly offsets each socket so the wires crisscross.
    float offset = random(tasksize.y);
    for (PVector socket : sockets)
    {
@@ -39,9 +46,12 @@ class WireTask extends Task {
    }
 
   }  
+  
+  //Overwriting the interact function to use the mouse position to drag wires.
   void interact(PVector interactionLocation) {
     PVector newpos = interactionLocation.copy().sub(position);
     
+    //For each wire it tests if the wire is being dragged, and if it's still in the panel.
     for (PVector wire : wires)
     {
       if (newpos.dist(wire) < 30.0 && grabbing 
@@ -51,12 +61,14 @@ class WireTask extends Task {
       && newpos.y < +tasksize.y/2
       )
       {
+        //Moves the wire position to the relative mouse position.
         wire.x = newpos.x;
         wire.y = newpos.y;
         break; //Breaks so it will only ever grab one item
       }
     }
     
+    //Tests if any of the tasks are incomplete.
     int i = 0;
     boolean anyincomplete = false;
     for (PVector wire : wires)
@@ -68,14 +80,18 @@ class WireTask extends Task {
       else {
         anyincomplete = true;
       }
+      //If all of the wires are used, then set the task as complete
       isComplete = !anyincomplete;
       i++;
     }
   }
   
+  //Draw the task to the screen
   void display() {
+    //Display the task background.
     super.display();
     
+    //Draw all of the wires.
     int i = 0;
     for (PVector wire : wires)
     {
@@ -89,6 +105,7 @@ class WireTask extends Task {
       i++;
   }
     
+    //Draw all of the sockets
     i = 0;
     for (PVector socket : sockets)
     {

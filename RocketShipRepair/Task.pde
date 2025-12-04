@@ -1,13 +1,20 @@
+//A parent class for a task, which can have child tasks.
 class Task {
+  //A global is complete value.
   boolean isComplete = false;
+  
+  //Variables relating to transformation.
   PVector position;
   PVector tasksize;
   PVector size;
+  
+  //Default constructor.
   Task (PVector newpos)
   {
     position = newpos;
   }
   
+  //This is how they scroll around and loop back.
   void move(float dir) {
     position.x += dir;
     if (position.x < -width)
@@ -18,8 +25,10 @@ class Task {
     }
   }
   
+  //An unused function, meant as a template for children to overwrite.
   void interact(PVector interactionLocation) {}
   
+  //Draws the task background.
   void display() {
     stroke(255,0,0);
     if (isComplete)
