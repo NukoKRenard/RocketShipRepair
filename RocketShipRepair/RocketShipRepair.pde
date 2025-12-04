@@ -132,7 +132,10 @@ void draw() {
       mousePos.add(mousevelocity);
       mousevelocity.add(mouseaccel);
       mousevelocity.sub(mousevelocity.copy().div(50));
-      mousevelocity.add(new PVector(0,5));
+      if (mousePos.y < height-2)
+      {
+        mousevelocity.add(new PVector(0,.25));
+      }
       mouseaccel = new PVector(0,0);
     }
     
