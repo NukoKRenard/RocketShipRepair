@@ -64,6 +64,10 @@ class WireTask extends Task {
         //Moves the wire position to the relative mouse position.
         wire.x = newpos.x;
         wire.y = newpos.y;
+        
+        //Lets the progeam know something has been grabbed.
+        grabbedsomething = true;
+        
         break; //Breaks so it will only ever grab one item
       }
     }

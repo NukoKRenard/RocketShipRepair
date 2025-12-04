@@ -209,6 +209,12 @@ void draw() {
     circle(mousePos.x,mousePos.y,30);
     frames++;
     popMatrix();
+    
+    if (!grabbedsomething) {
+      grabbing = false;
+    }
+    grabbedsomething = false;
+    
     break;
       
     //If the user is on the start screen.
