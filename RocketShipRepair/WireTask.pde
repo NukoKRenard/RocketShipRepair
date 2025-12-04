@@ -100,11 +100,11 @@ class WireTask extends Task {
     for (PVector wire : wires)
     {
       noStroke();
-      fill(25+noise(i*32)*200,25+noise(i*338)*200,25+noise(i*727)*200);
+      fill(25+noise(i*globaltaski*32)*200,25+noise(i*globaltaski*338)*200,25+noise(i*globaltaski*727)*200);
       circle(position.x+wire.x,position.y+wire.y,10);
       
       strokeWeight(5);
-      stroke(25+noise(i*32)*200,25+noise(i*338)*200,25+noise(i*727)*200);
+      stroke(25+noise(i*globaltaski*32)*200,25+noise(i*globaltaski*338)*200,25+noise(i*globaltaski*727)*200);
       line(wiresStart.get(i).x+position.x,wiresStart.get(i).y+position.y,wires.get(i).x+position.x,wires.get(i).y+position.y);
       i++;
   }
@@ -120,7 +120,7 @@ class WireTask extends Task {
       else {
         noFill();
       }
-      stroke(25+noise(i*32)*200,25+noise(i*338)*200,25+noise(i*727)*200);
+      stroke(25+noise(i*globaltaski*32)*200,25+noise(i*globaltaski*338)*200,25+noise(i*globaltaski*727)*200);
       strokeWeight(10);
       
       circle(position.x+socket.x,position.y+socket.y,20);

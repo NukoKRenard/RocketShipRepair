@@ -1,6 +1,9 @@
 //The cursor position, controlled by the arrow keys.
 PVector mousePos = new PVector();
 
+//A global variable used to enhance colour differences in tasks.
+int globaltaski = 0;
+
 //The different tasks
 ArrayList<Task> tasks = new ArrayList();
 int frames = 0;
@@ -78,9 +81,10 @@ void firstFrame() {
 void draw() {
   //Tests weither the user is in a game, or menu.
   switch (programState) {
-    
     //When the user is in the game.
     case IN_GAME:
+    globaltaski = 0;
+    
     //Same as the background function, used to get motion blur.
     fill(10,10,20,50);
     rectMode(CORNER);
@@ -151,6 +155,7 @@ void draw() {
     //Display and allow the mouse to interact with each task..
     for (Task task : tasks)
     {
+      globaltaski++;
       task.display();
       task.interact(mousePos);
       
