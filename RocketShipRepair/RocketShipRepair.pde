@@ -41,14 +41,14 @@ void firstFrame() {
   for (int i = 5; i >=0; i-=1)
   {
     //Puts the task at a random position.
-    PVector position = new PVector(random(-width,width*2),random(300,height-300));
+    PVector position = new PVector(random(-width+250,width*2-250),random(300,height-300));
     
     //A variable to find the smallest distance.
     float smallestDist = 10000;
     //Keeps repositioning the new task untill it is not intersecting with another task.
     do {
       smallestDist = 10000;
-      position = new PVector(random(-width,width*2),random(300,height-300));
+      position = new PVector(random(-width+250,width*2-250),random(300,height-300));
       
       //Tests the new task's position against all of the other tasks.
       for (Task task : tasks) {
