@@ -1,4 +1,3 @@
-boolean isInGame = false;
 //The cursor position, controlled by the arrow keys.
 PVector mousePos = new PVector();
 
